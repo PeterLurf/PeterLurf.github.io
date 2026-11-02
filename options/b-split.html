@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option B · Chalkboard split</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Red+Hat+Text:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Option B: chalkboard split. The left column stays put (name, intro, contents) while the
+     work scrolls on the right. Colors come from a math-department blackboard: slate green,
+     chalk white, and yellow chalk used only to underline links. Red Hat Text has open shapes
+     and generous spacing, so it holds up as light text on a dark ground. */
+  :root { --bg: #233029; --ink: #f3f1ea; --text: #cdd3c8; --muted: #93a096; --rule: rgb(243 241 234 / .14); --chalk: #e9d36b; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.6 "Red Hat Text", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--chalk); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+  a:hover { text-decoration-thickness: 3px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 5fr 7fr; gap: 72px; }
+
+  .side { position: sticky; top: 0; height: 100vh; padding: 80px 0 48px; display: flex; flex-direction: column; }
+  .side h1 { margin: 0; color: var(--ink); font-family: "Red Hat Display", sans-serif; font-size: 44px; line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
+  .side .intro { margin: 18px 0 0; max-width: 23em; }
+  .toc { margin: 48px 0 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+  .toc a { display: inline-block; padding: 3px 0; color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--ink); }
+  .toc a.on { color: var(--ink); text-decoration: underline; text-decoration-color: var(--chalk); text-underline-offset: 4px; }
+  .contact { margin-top: auto; display: grid; gap: 4px; font-size: 15.5px; }
+
+  main { padding: 80px 0 96px; }
+  section { margin-bottom: 80px; scroll-margin-top: 40px; }
+  section > h2 { margin: 0 0 18px; color: var(--ink); font-family: "Red Hat Display", sans-serif; font-size: 24px; font-weight: 700; }
+  section > p { margin: 0 0 16px; }
+  section > p b { color: var(--ink); }
+  .entry { padding: 16px 0; border-top: 1px solid var(--rule); }
+  .entry h3 { margin: 0 0 4px; color: var(--ink); font-size: 18px; line-height: 1.35; font-weight: 700; }
+  .entry .meta { color: var(--muted); font-size: 15px; }
+  .entry p { margin: 6px 0 0; }
+  .entry .meta i { font-style: normal; color: var(--chalk); }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 9px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+  td:first-child { width: 96px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  td b { color: var(--ink); }
+
+  @media (max-width: 880px) {
+    .wrap { grid-template-columns: 1fr; gap: 0; padding: 0 22px; }
+    .side { position: static; height: auto; padding: 56px 0 8px; }
+    .toc { display: none; }
+    .contact { margin-top: 24px; }
+    main { padding-top: 40px; }
+    td:first-child { width: 76px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="side">
+    <h1>Peter Lu</h1>
+    <p class="intro">Math at the University of Toronto. I study what language models compute internally, and I won silver for Canada at the 2026 International AI Olympiad. I'm looking for an undergraduate research role.</p>
+    <ul class="toc">
+      <li><a href="#about" class="on">About</a></li><li><a href="#research">Research</a></li><li><a href="#awards">Awards</a></li><li><a href="#experience">Experience</a></li>
+    </ul>
+    <div class="contact"><a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a><a href="https://github.com/PeterLurf">github.com/PeterLurf</a><a href="https://www.linkedin.com/in/peter-lurf">linkedin.com/in/peter-lurf</a></div>
+  </aside>
+
+  <main>
+    <section id="about">
+      <h2>About</h2>
+      <p>I'm a first-year mathematics student at the <b>University of Toronto</b> (St. George). I work on mechanistic interpretability, mostly with activation patching, probing, and steering. Right now I'm looking at recurrent-depth (looped) language models and what their latent reasoning does and doesn't expose.</p>
+      <p>Before university I started math, STEM, and AI clubs at my high school. Over four years they taught more than 1,500 students.</p>
+    </section>
+
+    <section id="research">
+      <h2>Research</h2>
+      <div class="entry"><h3>Latent reasoning</h3><div class="meta"><i>In progress</i></div><p>How language models reason in their hidden states without writing the steps out.</p></div>
+      <div class="entry"><h3>Endpoint self-report in looped language models</h3><div class="meta">2026</div><p>Concepts injected into each loop are present but unused. Subtracting a clean run recovers the injected sentence 96.9–100% of the time and a LoRA readout reaches 99.5%, yet the model's own answer stays at chance.</p></div>
+      <div class="entry"><h3><a href="https://github.com/PeterLurf/apart-collusion-sprint-2026">How a colluding monitor uses its own suspicion against itself</a></h3><div class="meta">Apart Research AI Collusion Sprint, October 2026</div></div>
+      <div class="entry"><h3><a href="https://github.com/PeterLurf/BlazeShield">BlazeShield</a></h3><div class="meta">SproutHacks</div><p>Q-learning that places firebreaks on a PDE fire-spread simulation over real terrain.</p></div>
+    </section>
+
+    <section id="awards">
+      <h2>Awards</h2>
+      <table>
+        <tr><td>2026</td><td><b>Silver medal</b>, International AI Olympiad, Team Canada</td></tr>
+        <tr><td>2026</td><td>Second place, Canadian IAIO team selection test</td></tr>
+        <tr><td>2025</td><td>Team selection finalist, IOAI Canada</td></tr>
+        <tr><td>2024</td><td>Gold, IOAI Canada camp</td></tr>
+        <tr><td>Earlier</td><td>AIME qualifier twice, CIMC top 35, CMS Lynx top 6, USACO Gold, CCC Honour Roll, four top-3 hackathon finishes</td></tr>
+      </table>
+    </section>
+
+    <section id="experience">
+      <h2>Experience</h2>
+      <table>
+        <tr><td>2026–</td><td><b>B.Sc. Mathematics</b>, University of Toronto</td></tr>
+        <tr><td>2024–26</td><td>Administrative coordinator, Ontario Competitive Mathematics Committee</td></tr>
+        <tr><td>2022–26</td><td>Founder and president, math, STEM-ED and AI clubs, Unionville High School</td></tr>
+      </table>
+    </section>
+  </main>
+</div>
+<script>
+  // underline the contents entry for the section in view
+  const links = [...document.querySelectorAll('.toc a')];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.hash === '#' + e.target.id));
+  }), { rootMargin: '-35% 0px -60% 0px' });
+  document.querySelectorAll('main section').forEach(s => io.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option F · Engineering pad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Option F: engineering pad. A dense index where everything important fits on the first
+     screen in three columns, after rsms.me and Julia Evans's homepage. Colors come from a math
+     student's desk: green engineering paper with its faint grid, graphite, and a red pencil
+     used once, to circle the medal. Overpass is based on the US highway-sign typeface. */
+  :root { --paper: #eef2e3; --grid: #d6e0c6; --ink: #262824; --text: #3c3f39; --muted: #6c7166; --red: #c43a2f; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text); font: 400 16px/1.55 Overpass, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    background-color: var(--paper);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  a { color: var(--ink); text-decoration: underline; text-decoration-color: rgb(38 40 36 / .35); text-underline-offset: 3px; }
+  a:hover { color: var(--red); text-decoration-color: var(--red); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 60px 40px 64px; }
+
+  .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; padding-bottom: 20px; border-bottom: 2px solid var(--ink); }
+  h1 { margin: 0; color: var(--ink); font-size: 56px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; }
+  .head p { margin: 0; font-size: 17px; color: var(--ink); }
+
+  .cols { display: grid; grid-template-columns: 1.25fr 1fr 0.8fr; gap: 40px; padding-top: 24px; }
+  h2 { margin: 0 0 10px; color: var(--ink); font-size: 19px; font-weight: 700; }
+  .it { margin-bottom: 16px; }
+  .it b { display: block; color: var(--ink); font-weight: 700; line-height: 1.35; }
+  .it span { color: var(--muted); font-size: 14.5px; }
+  .it p { margin: 2px 0 0; font-size: 15px; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li { display: grid; grid-template-columns: 52px 1fr; padding: 5px 0; border-bottom: 1px dashed #b9c4a8; font-size: 15px; }
+  li:last-child { border-bottom: 0; }
+  li .y { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .circled { position: relative; display: inline-block; margin: 0 12px 0 6px; color: var(--ink); font-weight: 700; }
+  .circled svg { position: absolute; left: -12px; top: -8px; width: calc(100% + 24px); height: calc(100% + 16px); overflow: visible; pointer-events: none; }
+  .side p { margin: 0 0 12px; font-size: 15px; }
+  .side .contact { display: grid; gap: 2px; margin-top: 16px; }
+  .later { margin-top: 36px; padding-top: 18px; border-top: 2px solid var(--ink); display: grid; grid-template-columns: 1.25fr 1.8fr; gap: 40px; }
+  .later p { margin: 0 0 10px; font-size: 15px; }
+  footer { margin-top: 40px; font-size: 13.5px; color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .wrap { padding: 40px 20px; }
+    .head, .cols, .later { grid-template-columns: 1fr; gap: 20px; }
+    h1 { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Peter Lu</h1>
+    <p>First-year math at the University of Toronto. I study what language models compute internally, and I'm looking for an undergraduate research role.</p>
+  </div>
+
+  <div class="cols">
+    <div>
+      <h2>Research</h2>
+      <div class="it"><b>Latent reasoning</b><span>In progress</span><p>How models reason in their hidden states without writing the steps out.</p></div>
+      <div class="it"><b>Endpoint self-report in looped LMs</b><span>2026</span><p>Injected concepts can be read from the activations 96.9–100% of the time, but the model's own answer stays at chance.</p></div>
+      <div class="it"><b><a href="https://github.com/PeterLurf/apart-collusion-sprint-2026">A colluding monitor's suspicion, used against itself</a></b><span>Apart Research sprint, Oct 2026</span></div>
+      <div class="it"><b><a href="https://github.com/PeterLurf/BlazeShield">BlazeShield</a></b><span>SproutHacks: RL for wildfire firebreaks</span></div>
+    </div>
+    <div>
+      <h2>Awards</h2>
+      <ul>
+        <li><span class="y">2026</span><span><span class="circled">Silver medal, IAIO<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M8 22 C6 8 40 2 70 4 C94 6 99 16 96 26 C92 37 50 40 24 36 C9 33 3 26 12 14" fill="none" stroke="#c43a2f" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span> <span style="color:var(--muted)">Team Canada</span></span></li>
+        <li><span class="y">2026</span><span>2nd, Canadian IAIO selection test</span></li>
+        <li><span class="y">2025</span><span>Team selection finalist, IOAI Canada</span></li>
+        <li><span class="y">2024</span><span>Gold, IOAI Canada camp</span></li>
+        <li><span class="y"></span><span>AIME twice, CIMC top 35, CMS Lynx top 6</span></li>
+        <li><span class="y"></span><span>USACO Gold, CCC Honour Roll</span></li>
+        <li><span class="y"></span><span>Four top-3 hackathon finishes</span></li>
+      </ul>
+    </div>
+    <div class="side">
+      <h2>Elsewhere</h2>
+      <p>Code on <a href="https://github.com/PeterLurf">GitHub</a>, résumé-shaped things on <a href="https://www.linkedin.com/in/peter-lurf">LinkedIn</a>.</p>
+      <p>Email is the fastest way to reach me.</p>
+      <div class="contact"><a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a></div>
+    </div>
+  </div>
+
+  <div class="later">
+    <div>
+      <h2>Experience</h2>
+      <ul>
+        <li><span class="y">2026–</span><span>B.Sc. Mathematics, UofT St. George</span></li>
+        <li><span class="y">2024</span><span>Coordinator, Ontario Competitive Math Committee</span></li>
+        <li><span class="y">2022</span><span>Founded math, STEM-ED and AI clubs</span></li>
+      </ul>
+    </div>
+    <div>
+      <h2>About</h2>
+      <p>I work on mechanistic interpretability, mostly with activation patching, probing, and steering. Right now that means recurrent-depth (looped) language models, which reuse the same layers several times, and what their latent reasoning does and doesn't expose.</p>
+      <p>Before university I ran three clubs at my high school with 20+ student instructors. They taught competition math, robotics, and AI to more than 1,500 students, using an AI/ML curriculum that IOAI Canada certified.</p>
+    </div>
+  </div>
+
+  <footer>Peter Lu, 2026</footer>
+</div>
+</body>
+</html>

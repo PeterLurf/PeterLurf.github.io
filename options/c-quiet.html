@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option C · Quiet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Option C: quiet. One narrow column, small type, labels on the left like a CV, after the
+     "design engineer" sites (rauno.me, paco.me). No color at all except link underlines:
+     the content has to carry it. */
+  :root { --bg: #fafaf9; --ink: #1c1b1f; --text: #55535b; --muted: #8f8c96; --rule: #e3e2e6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 15.5px/1.7 "Hanken Grotesk", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--ink); text-decoration: underline; text-decoration-color: #c9c7ce; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-color: var(--ink); }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 104px 28px 80px; }
+
+  h1 { margin: 0; color: var(--ink); font-size: 15.5px; font-weight: 600; }
+  .sub { color: var(--muted); }
+  .intro { margin: 36px 0 0; color: var(--ink); font-size: 18px; line-height: 1.6; }
+  .intro + p { margin: 14px 0 0; }
+
+  .block { display: grid; grid-template-columns: 132px 1fr; gap: 24px; margin-top: 64px; }
+  .block > h2 { margin: 0; font-size: 15.5px; font-weight: 400; color: var(--muted); }
+  .list { display: grid; gap: 20px; }
+  .it h3 { margin: 0; font-size: 15.5px; font-weight: 500; color: var(--ink); line-height: 1.5; }
+  .it .meta { color: var(--muted); }
+  .it p { margin: 4px 0 0; }
+  .rows { display: grid; gap: 6px; }
+  .r { display: flex; justify-content: space-between; gap: 16px; }
+  .r span:last-child { flex: none; color: var(--muted); font-variant-numeric: tabular-nums; }
+  footer { margin-top: 88px; color: var(--muted); font-size: 13.5px; }
+
+  @media (max-width: 600px) {
+    .wrap { padding-top: 56px; }
+    .block { grid-template-columns: 1fr; gap: 10px; margin-top: 52px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Peter Lu</h1>
+  <div class="sub">Mathematics, University of Toronto</div>
+
+  <p class="intro">Looped language models can carry a concept they're unable to tell you about. I injected sentences into each loop and could read them back out of the activations 96.9–100% of the time. Asked directly, the model did no better than chance.</p>
+  <p>That's the kind of question I work on: what models compute internally, and how much of it they can report. I won silver for Canada at the 2026 International AI Olympiad, and I'm looking for an undergraduate research role.</p>
+
+  <div class="block">
+    <h2>Research</h2>
+    <div class="list">
+      <div class="it"><h3>Latent reasoning</h3><div class="meta">In progress</div><p>How models reason in their hidden states without writing the steps out.</p></div>
+      <div class="it"><h3>Endpoint self-report in looped LMs</h3><div class="meta">2026</div><p>The result above. A LoRA readout reaches 99.5%; the model's own answer stays at chance.</p></div>
+      <div class="it"><h3><a href="https://github.com/PeterLurf/apart-collusion-sprint-2026">How a colluding monitor uses its own suspicion against itself</a></h3><div class="meta">Apart Research sprint, October 2026</div></div>
+      <div class="it"><h3><a href="https://github.com/PeterLurf/BlazeShield">BlazeShield</a></h3><div class="meta">SproutHacks. Reinforcement learning for placing wildfire firebreaks.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Awards</h2>
+    <div class="rows">
+      <div class="r"><span>Silver medal, International AI Olympiad</span><span>2026</span></div>
+      <div class="r"><span>Second, Canadian IAIO team selection test</span><span>2026</span></div>
+      <div class="r"><span>Team selection finalist, IOAI Canada</span><span>2025</span></div>
+      <div class="r"><span>Gold, IOAI Canada camp</span><span>2024</span></div>
+      <div class="r"><span>AIME twice, CIMC top 35, CMS Lynx top 6</span><span>Math</span></div>
+      <div class="r"><span>USACO Gold, CCC Honour Roll</span><span>CS</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Experience</h2>
+    <div class="rows">
+      <div class="r"><span>B.Sc. Mathematics, University of Toronto</span><span>2026–</span></div>
+      <div class="r"><span>Coordinator, Ontario Competitive Mathematics Committee</span><span>2024–26</span></div>
+      <div class="r"><span>Founded math, STEM and AI clubs; 1,500+ students</span><span>2022–26</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Contact</h2>
+    <div class="rows">
+      <div class="r"><span><a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a></span><span>Email</span></div>
+      <div class="r"><span><a href="https://github.com/PeterLurf">PeterLurf</a></span><span>GitHub</span></div>
+      <div class="r"><span><a href="https://www.linkedin.com/in/peter-lurf">peter-lurf</a></span><span>LinkedIn</span></div>
+    </div>
+  </div>
+
+  <footer>Peter Lu, 2026</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# Builds the site with build.py and publishes it to GitHub Pages on every push to main.
+# So you can edit or add a post on github.com and it goes live a minute later, without running anything yourself.
+#
+# One-time setup: on GitHub, Settings > Pages > Build and deployment > Source: "GitHub Actions".
+# Progress and errors show in the repository's Actions tab.
+name: Build and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # adds a "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If you push twice quickly, finish the first deploy and skip to the newest.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0   # full history, so the sitemap can date each page by its last commit
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Build
+        run: |
+          pip install markdown
+          python build.py
+
+      # Publish only the site: leave out the mockups, templates and repository files.
+      - name: Collect the site
+        run: rsync -a --exclude _site --exclude .git --exclude .github --exclude options --exclude templates ./ _site/
+
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v5

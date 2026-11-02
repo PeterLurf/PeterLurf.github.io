@@ -1,0 +1,5 @@
+# Everything is public except the design mockups.
+User-agent: *
+Disallow: /options/
+
+Sitemap: https://peterlurf.github.io/sitemap.xml

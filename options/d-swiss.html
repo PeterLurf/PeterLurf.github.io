@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option D · Swiss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  /* Option D: Swiss. International Typographic Style: a strict 12-column grid, very large
+     type, black on white. The one color is Canada red, used once, for the olympiad result.
+     Headings stay in sentence case; nothing is numbered that isn't a sequence. */
+  :root { --bg: #fff; --ink: #111; --muted: #66645f; --red: #d52b1e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16.5px/1.55 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-underline-offset: 3px; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .g { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+
+  .bar { padding: 18px 0; font-size: 15px; }
+  .bar b { grid-column: span 6; font-weight: 600; }
+  .bar nav { grid-column: span 6; display: flex; justify-content: flex-end; gap: 24px; }
+  .bar a { text-decoration: none; }
+  .bar a:hover { text-decoration: underline; }
+
+  .name { margin: 24px 0 0; font-size: clamp(76px, 16vw, 220px); line-height: .8; font-weight: 800; font-stretch: 110%; letter-spacing: -0.05em; }
+  .lede { margin-top: 44px; padding-bottom: 56px; border-bottom: 3px solid var(--ink); }
+  .lede p { grid-column: 1 / span 7; margin: 0; font-size: 27px; line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; }
+  .lede p .red { color: var(--red); }
+  .lede .side { grid-column: 9 / span 4; display: grid; gap: 2px; align-content: end; font-size: 16px; }
+
+  section { padding: 36px 0 56px; border-bottom: 1px solid var(--ink); }
+  section > h2 { grid-column: span 3; margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .body { grid-column: span 9; }
+
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+  .w h3 { margin: 0 0 6px; font-size: 28px; line-height: 1.05; font-weight: 750; font-stretch: 85%; letter-spacing: -0.02em; }
+  .w .meta { margin-bottom: 8px; font-size: 14.5px; color: var(--muted); }
+  .w p { margin: 0; font-size: 15.5px; color: #333; }
+  .w a { font-weight: 600; font-size: 15px; }
+  .w.big { grid-column: 1 / -1; }
+  .w.big h3 { font-size: 44px; }
+  .w.big p { font-size: 18px; max-width: 34em; }
+
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl td { padding: 9px 0; border-top: 1px solid #d8d6d0; vertical-align: top; }
+  .tbl tr:first-child td { border-top: 0; }
+  .tbl td:first-child { width: 110px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .contact { font-size: clamp(30px, 4.4vw, 54px); font-weight: 750; font-stretch: 88%; letter-spacing: -0.025em; line-height: 1.05; }
+  footer { padding: 20px 0 40px; font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 800px) {
+    .wrap { padding: 0 18px; }
+    .g { grid-template-columns: 1fr; gap: 12px; }
+    .bar b, .bar nav, .lede p, .lede .side, section > h2, .body { grid-column: 1 / -1; }
+    .bar nav { justify-content: flex-start; gap: 16px; }
+    .lede p { font-size: 21px; }
+    .pair { grid-template-columns: 1fr; }
+    .w.big h3 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar g"><b>Peter Lu</b><nav><a href="#research">Research</a><a href="#awards">Awards</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav></div>
+
+  <h1 class="name">Peter Lu</h1>
+
+  <div class="lede g">
+    <p>Math at the University of Toronto. I study what language models compute internally. <span class="red">Silver medal, International AI Olympiad 2026, Team Canada.</span></p>
+    <div class="side"><span style="color:var(--muted)">Looking for an undergraduate research role.</span><a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a><a href="https://github.com/PeterLurf">github.com/PeterLurf</a><a href="https://www.linkedin.com/in/peter-lurf">linkedin.com/in/peter-lurf</a></div>
+  </div>
+
+  <section id="research" class="g">
+    <h2>Research</h2>
+    <div class="body pair">
+      <div class="w big"><div class="meta">Interpretability, 2026</div><h3>Looped models know what they can't say</h3><p>I injected concept vectors into each loop of a recurrent-depth model. Subtracting a clean run recovers the injected sentence 96.9–100% of the time and a LoRA readout reaches 99.5%. The model's own answer stays at chance.</p></div>
+      <div class="w"><div class="meta">In progress</div><h3>Latent reasoning</h3><p>How models reason in their hidden states without writing the steps out.</p></div>
+      <div class="w"><div class="meta">Apart Research sprint, October 2026</div><h3>A colluding monitor turns its suspicion on itself</h3><p>What happens when the model doing the watching is in on it. <a href="https://github.com/PeterLurf/apart-collusion-sprint-2026">Code</a></p></div>
+      <div class="w"><div class="meta">SproutHacks</div><h3>BlazeShield</h3><p>Q-learning firebreak placement on a PDE fire-spread simulation over real terrain. <a href="https://github.com/PeterLurf/BlazeShield">Code</a></p></div>
+    </div>
+  </section>
+
+  <section id="awards" class="g">
+    <h2>Awards</h2>
+    <div class="body"><table class="tbl">
+      <tr><td>2026</td><td>Silver medal, International AI Olympiad (IAIO), Slovenia</td></tr>
+      <tr><td>2026</td><td>Second place, Canadian IAIO team selection test</td></tr>
+      <tr><td>2025</td><td>Team selection finalist, IOAI Canada</td></tr>
+      <tr><td>2024</td><td>Gold, IOAI Canada camp</td></tr>
+      <tr><td>Math</td><td>AIME qualifier twice, CIMC top 35 in Canada, CMS Lynx top 6</td></tr>
+      <tr><td>CS</td><td>USACO Gold, CCC Honour Roll, four top-3 hackathon finishes</td></tr>
+    </table></div>
+  </section>
+
+  <section id="experience" class="g">
+    <h2>Experience</h2>
+    <div class="body"><table class="tbl">
+      <tr><td>2026–</td><td>B.Sc. Mathematics, University of Toronto, St. George</td></tr>
+      <tr><td>2024–26</td><td>Administrative coordinator, Ontario Competitive Mathematics Committee</td></tr>
+      <tr><td>2022–26</td><td>Founder and president of three clubs (math, STEM-ED, AI) that taught 1,500+ students</td></tr>
+    </table></div>
+  </section>
+
+  <section id="contact" class="g" style="border-bottom:0">
+    <h2>Contact</h2>
+    <div class="body"><a class="contact" href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a></div>
+  </section>
+
+  <footer>Peter Lu, 2026</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option A · Research index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Option A: research index. Structure after the Transformer Circuits Thread: dates in a left
+     gutter, entries in a right column. Palette from the institution: University of Toronto
+     navy (#1E3765) on plain white. Section names sit in the gutter, in sentence case. */
+  :root { --bg: #ffffff; --ink: #1a1c22; --text: #3d404a; --muted: #6d707a; --rule: #e4e5ea; --navy: #1e3765; --navy-soft: #e9edf5; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 16.5px/1.62 "Libre Franklin", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--navy); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+
+  header.top { display: flex; justify-content: space-between; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+  header.top b { color: var(--ink); font-weight: 600; }
+  header nav { display: flex; gap: 22px; }
+  header nav a { color: var(--muted); text-decoration: none; }
+  header nav a:hover { color: var(--navy); }
+
+  .grid { display: grid; grid-template-columns: 170px 1fr; gap: 0 48px; }
+  .hero { padding: 80px 0 64px; }
+  .hero h1 { grid-column: 2; margin: 0; color: var(--ink); font-size: clamp(42px, 6vw, 68px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
+  .hero p { grid-column: 2; max-width: 36em; margin: 22px 0 0; font-size: 19px; line-height: 1.55; color: var(--text); }
+  .hero p strong { color: var(--ink); font-weight: 600; }
+  .hero .links { grid-column: 2; margin-top: 22px; display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 15.5px; }
+
+  section { border-top: 2px solid var(--navy); padding: 20px 0 48px; }
+  section > h2 { margin: 0 0 4px 218px; color: var(--navy); font-size: 17px; font-weight: 600; }
+  .row { padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .row:last-child { border-bottom: 0; }
+  .when { grid-column: 1; color: var(--muted); font-size: 14.5px; font-variant-numeric: tabular-nums; padding-top: 3px; }
+  .what { grid-column: 2; }
+  .row h3 { margin: 0 0 4px; color: var(--ink); font-size: 19px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 600; }
+  .row p { margin: 0; max-width: 40em; }
+  .row .note { margin-top: 6px; font-size: 15px; }
+  .ongoing { display: inline-block; margin-left: 8px; padding: 1px 7px; vertical-align: 3px; border-radius: 3px; background: var(--navy-soft); color: var(--navy); font-size: 13px; font-weight: 600; letter-spacing: 0; }
+  .two { columns: 2; column-gap: 40px; margin: 0; padding: 0; list-style: none; }
+  .two li { padding: 3px 0; break-inside: avoid; }
+  footer { padding: 20px 0 48px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 0 20px; }
+    header nav { gap: 14px; font-size: 14px; }
+    .grid { grid-template-columns: 1fr; }
+    .hero { padding: 48px 0 40px; }
+    .hero > *, .what, .when { grid-column: 1 !important; }
+    section > h2 { margin-left: 0; }
+    .two { columns: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <b>Peter Lu</b>
+    <nav><a href="#research">Research</a><a href="#awards">Awards</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+  </header>
+
+  <div class="hero grid">
+    <h1>Peter Lu</h1>
+    <p>I'm a first-year math student at the University of Toronto. I study what language models compute internally. My latest result: looped models carry injected concepts they can't report on. I could read them out of the activations 96.9–100% of the time, while the model's own answer stayed at chance. I won <strong>silver at the 2026 International AI Olympiad</strong> for Canada, and I'm looking for an undergraduate research role.</p>
+    <div class="links"><a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a><a href="https://github.com/PeterLurf">GitHub</a><a href="https://www.linkedin.com/in/peter-lurf">LinkedIn</a></div>
+  </div>
+
+  <section id="research">
+    <h2>Research</h2>
+    <div class="row grid"><div class="when"></div><div class="what"><h3>Latent reasoning <span class="ongoing">ongoing</span></h3><p>How language models reason in their hidden states without writing the steps out. More soon.</p></div></div>
+    <div class="row grid"><div class="when">2026</div><div class="what"><h3>Endpoint self-report in looped language models</h3><p>I injected concept vectors into each loop of a recurrent-depth model and asked it which sentence had changed. Subtracting a clean run recovers the injected sentence 96.9–100% of the time and a LoRA readout reaches 99.5%, yet the model's own answer stays at chance.</p></div></div>
+    <div class="row grid"><div class="when">Oct 2026</div><div class="what"><h3>How a colluding monitor uses its own suspicion against itself</h3><p>Apart Research AI Collusion Sprint. What happens when the LLM watching another model is in on it.</p><p class="note"><a href="https://github.com/PeterLurf/apart-collusion-sprint-2026">Code on GitHub</a></p></div></div>
+    <div class="row grid"><div class="when">SproutHacks</div><div class="what"><h3>BlazeShield: reinforcement learning for wildfire containment</h3><p>A Q-learning agent places firebreaks on a PDE fire-spread simulation over topographic maps. Convex hulls bound the fire front, which shrinks the action space.</p><p class="note"><a href="https://github.com/PeterLurf/BlazeShield">Code on GitHub</a></p></div></div>
+  </section>
+
+  <section id="awards">
+    <h2>Awards</h2>
+    <div class="row grid"><div class="when">2026</div><div class="what"><h3>Silver medal, International AI Olympiad</h3><p>Team Canada, Slovenia. I qualified second in the Canadian team selection test.</p></div></div>
+    <div class="row grid"><div class="when">2024–25</div><div class="what"><p>Gold at the IOAI Canada camp (2024), team selection finalist (2025)</p></div></div>
+    <div class="row grid"><div class="when">Math and CS</div><div class="what"><ul class="two"><li>AIME qualifier, twice</li><li>CIMC, top 35 in Canada</li><li>CMS Lynx, top 6</li><li>USACO Gold</li><li>CCC Honour Roll</li><li>Four top-3 hackathon finishes</li></ul></div></div>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="row grid"><div class="when">2026–</div><div class="what"><h3>B.Sc. Mathematics, University of Toronto</h3><p>St. George campus.</p></div></div>
+    <div class="row grid"><div class="when">2024–26</div><div class="what"><h3>Administrative coordinator, Ontario Competitive Mathematics Committee</h3><p>Logistics between OCMC, contest proctors, and partner high schools across Ontario.</p></div></div>
+    <div class="row grid"><div class="when">2022–26</div><div class="what"><h3>Founder and president, math, STEM-ED and AI clubs</h3><p>Three clubs, 20+ student instructors, 1,500+ students. I wrote an AI/ML curriculum that IOAI Canada certified.</p></div></div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="row grid"><div class="when"></div><div class="what"><p>Email is best: <a href="mailto:peterlujh@gmail.com">peterlujh@gmail.com</a>. Code is on <a href="https://github.com/PeterLurf">GitHub</a>.</p></div></div>
+  </section>
+
+  <footer>Peter Lu, 2026</footer>
+</div>
+</body>
+</html>

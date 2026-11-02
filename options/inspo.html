@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspiration</title>
+<style>
+  body { margin: 0; padding: 48px 24px 80px; background: #f6f6f4; color: #1d1c20; font: 16px/1.55 system-ui, sans-serif; }
+  main { max-width: 780px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 6px; }
+  .lede { margin: 0 0 8px; color: #5f5c66; }
+  .lede a { color: inherit; }
+  h2 { margin: 40px 0 4px; font-size: 19px; }
+  h2 + p { margin: 0 0 10px; color: #5f5c66; font-size: 15px; }
+  ul { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid #e3e3e0; border-radius: 6px; }
+  li { display: grid; grid-template-columns: 210px 1fr; gap: 16px; padding: 10px 16px; border-top: 1px solid #ececea; }
+  li:first-child { border-top: 0; }
+  li a { color: #1d1c20; font-weight: 600; text-decoration: underline; text-decoration-color: #c9c8cc; text-underline-offset: 3px; }
+  li a:hover { text-decoration-color: #1d1c20; }
+  li span { color: #4d4b53; font-size: 15px; }
+  .pick::after { content: "pick"; margin-left: 8px; padding: 0 6px; border-radius: 3px; background: #1d1c20; color: #fff; font-size: 11px; font-weight: 600; vertical-align: 2px; }
+  @media (max-width: 600px) { li { grid-template-columns: 1fr; gap: 0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Inspiration</h1>
+  <p class="lede">Live personal sites, grouped by what's worth taking from them. Every link opens in a new tab. "Pick" marks the ones closest to what your site could be. Back to the <a href="index.html">six options</a>.</p>
+
+  <h2>Interpretability and ML researchers</h2>
+  <p>Your field. Worth seeing what the people you'd apply to actually put on their pages.</p>
+  <ul>
+    <li><a class="pick" href="https://trentonbricken.com" target="_blank" rel="noopener">Trenton Bricken</a><span>Interpretability researcher at Anthropic.</span></li>
+    <li><a href="https://arthurconmy.github.io" target="_blank" rel="noopener">Arthur Conmy</a><span>Interpretability researcher at Anthropic, known for automated circuit discovery (ACDC).</span></li>
+    <li><a href="https://www.neelnanda.io" target="_blank" rel="noopener">Neel Nanda</a><span>Blue header bar and a grid of posts; mech interp guides front and centre.</span></li>
+    <li><a href="https://colah.github.io" target="_blank" rel="noopener">Chris Olah</a><span>A photo background with cards for each project. Personal rather than polished.</span></li>
+    <li><a href="https://nelhage.com" target="_blank" rel="noopener">Nelson Elhage</a><span>Engineer turned interpretability researcher; co-author on the early Transformer Circuits papers.</span></li>
+    <li><a href="https://leogao.dev" target="_blank" rel="noopener">Leo Gao</a><span>Alignment and interpretability researcher.</span></li>
+    <li><a href="https://ninapanickssery.com" target="_blank" rel="noopener">Nina Panickssery</a><span>Steering-vector research; a short, direct homepage.</span></li>
+    <li><a href="https://jesse.mu" target="_blank" rel="noopener">Jesse Mu</a><span>ML researcher; compact academic page.</span></li>
+    <li><a href="https://lucasb.eyer.be" target="_blank" rel="noopener">Lucas Beyer</a><span>Vision and multimodal researcher.</span></li>
+    <li><a href="https://karpathy.ai" target="_blank" rel="noopener">Andrej Karpathy</a><span>Photo, one paragraph, then a plain list of everything he's made.</span></li>
+    <li><a href="https://evjang.com" target="_blank" rel="noopener">Eric Jang</a><span>Robotics and ML; homepage plus a long-running blog.</span></li>
+    <li><a href="https://lilianweng.github.io" target="_blank" rel="noopener">Lilian Weng</a><span>A clean blog theme where long technical posts carry everything.</span></li>
+    <li><a href="https://jalammar.github.io" target="_blank" rel="noopener">Jay Alammar</a><span>Known for hand-made illustrations of transformers. The figures are the brand.</span></li>
+  </ul>
+
+  <h2>Classic academic homepages</h2>
+  <p>The convention your readers (professors, PIs) are used to. Good to know before you break it.</p>
+  <ul>
+    <li><a class="pick" href="https://jonbarron.info" target="_blank" rel="noopener">Jon Barron</a><span>Photo, short bio, then papers each with a thumbnail. Its source is public and copied across half of ML academia.</span></li>
+    <li><a href="https://www.anish.io" target="_blank" rel="noopener">Anish Athalye</a><span>Researcher and engineer; tidy academic page.</span></li>
+    <li><a href="https://www.cs.cmu.edu/~aditirag" target="_blank" rel="noopener">Aditi Raghunathan</a><span>A CMU faculty homepage: what a PI's page looks like.</span></li>
+    <li><a href="https://nicholas.carlini.com" target="_blank" rel="noopener">Nicholas Carlini</a><span>Security and ML researcher; a plain page with a lot of personality in the content.</span></li>
+  </ul>
+
+  <h2>Research you can play with</h2>
+  <p>Sites where an interactive figure or explainer is the main event, like option E.</p>
+  <ul>
+    <li><a class="pick" href="https://ciechanow.ski" target="_blank" rel="noopener">Bartosz Ciechanowski</a><span>A saturated blue band, plain text, then interactive 3D explainers.</span></li>
+    <li><a href="https://transformer-circuits.pub" target="_blank" rel="noopener">Transformer Circuits Thread</a><span>Big plain title, dates in a left gutter, thumbnails of figures.</span></li>
+    <li><a href="https://distill.pub/2020/circuits/zoom-in/" target="_blank" rel="noopener">Distill: Zoom In</a><span>Figure right under the title, then an author and affiliation row.</span></li>
+    <li><a href="https://acko.net" target="_blank" rel="noopener">Steven Wittens (acko.net)</a><span>A full-width WebGL header and long math-and-graphics essays.</span></li>
+    <li><a href="https://www.3blue1brown.com" target="_blank" rel="noopener">3Blue1Brown</a><span>Grant Sanderson's math lessons; a dark site built around the videos.</span></li>
+    <li><a href="https://wattenberger.com" target="_blank" rel="noopener">Amelia Wattenberger</a><span>Huge playful display type and data-viz explainers.</span></li>
+    <li><a href="https://ncase.me" target="_blank" rel="noopener">Nicky Case</a><span>Hand-drawn, playful interactive explainers.</span></li>
+    <li><a href="https://worrydream.com" target="_blank" rel="noopener">Bret Victor</a><span>The talks and essays that started "explorable explanations".</span></li>
+  </ul>
+
+  <h2>Writing-first, almost no design</h2>
+  <p>Proof that a plain page with strong content beats a polished template.</p>
+  <ul>
+    <li><a class="pick" href="https://patrickcollison.com" target="_blank" rel="noopener">Patrick Collison</a><span>Plain text pages: bookshelf, questions, a list of fast projects.</span></li>
+    <li><a href="https://paulgraham.com" target="_blank" rel="noopener">Paul Graham</a><span>A 1990s table layout that never changed, and nobody minds.</span></li>
+    <li><a href="https://danluu.com" target="_blank" rel="noopener">Dan Luu</a><span>Essentially no CSS: a list of essay titles.</span></li>
+    <li><a href="https://gwern.net" target="_blank" rel="noopener">Gwern</a><span>Dense essays with sidenotes and link previews (uses a serif face).</span></li>
+    <li><a href="https://simonwillison.net" target="_blank" rel="noopener">Simon Willison</a><span>A prolific LLM blog; layout built for daily posting.</span></li>
+    <li><a href="https://jvns.ca" target="_blank" rel="noopener">Julia Evans</a><span>Orange striped frame and a dense dated list of posts. Unmistakably hers.</span></li>
+    <li><a href="https://jsomers.net" target="_blank" rel="noopener">James Somers</a><span>Writer and programmer; simple homepage.</span></li>
+    <li><a href="https://macwright.com" target="_blank" rel="noopener">Tom MacWright</a><span>Minimal, fast, opinionated personal site.</span></li>
+    <li><a href="https://overreacted.io" target="_blank" rel="noopener">Dan Abramov</a><span>A single column of posts; nothing else.</span></li>
+    <li><a href="https://robinsloan.com" target="_blank" rel="noopener">Robin Sloan</a><span>Novelist; the site reads like his newsletters.</span></li>
+  </ul>
+
+  <h2>Designers and design engineers</h2>
+  <p>Where the small details are the point. Good for borrowing one move, not a whole look.</p>
+  <ul>
+    <li><a class="pick" href="https://anthonyhobday.com" target="_blank" rel="noopener">Anthony Hobday</a><span>Product designer who wrote "Visual design rules you can safely follow every time".</span></li>
+    <li><a class="pick" href="https://lynnandtonic.com" target="_blank" rel="noopener">Lynn Fisher</a><span>Redesigns her site from scratch every year; the archive of past versions is worth a look.</span></li>
+    <li><a href="https://rsms.me" target="_blank" rel="noopener">Rasmus Andersson</a><span>Designer of the Inter typeface. A dark grey index in columns with one orange dot.</span></li>
+    <li><a href="https://rauno.me" target="_blank" rel="noopener">Rauno Freiberg</a><span>Interaction designer; the page itself is a small interactive toy.</span></li>
+    <li><a href="https://paco.me" target="_blank" rel="noopener">Paco Coursey</a><span>Design engineer; tiny, quiet, dark.</span></li>
+    <li><a href="https://emilkowal.ski" target="_blank" rel="noopener">Emil Kowalski</a><span>Design engineer known for animation craft (Sonner, Vaul).</span></li>
+    <li><a href="https://brianlovin.com" target="_blank" rel="noopener">Brian Lovin</a><span>Designer; the site works like a small app.</span></li>
+    <li><a href="https://leerob.com" target="_blank" rel="noopener">Lee Robinson</a><span>Developer educator; minimal text-only homepage.</span></li>
+    <li><a href="https://frankchimero.com" target="_blank" rel="noopener">Frank Chimero</a><span>Designer and writer ("The Shape of Design").</span></li>
+    <li><a href="https://www.joshwcomeau.com" target="_blank" rel="noopener">Josh Comeau</a><span>Whimsical, colorful, lots of interactive touches.</span></li>
+    <li><a href="https://cassie.codes" target="_blank" rel="noopener">Cassie Evans</a><span>SVG animation specialist; the site shows it off.</span></li>
+    <li><a href="https://spencerchang.me" target="_blank" rel="noopener">Spencer Chang</a><span>Experimental, playful personal web projects.</span></li>
+    <li><a href="https://maggieappleton.com" target="_blank" rel="noopener">Maggie Appleton</a><span>Illustrated "digital garden" of notes and essays.</span></li>
+    <li><a href="https://andymatuschak.org" target="_blank" rel="noopener">Andy Matuschak</a><span>Researcher on tools for thought; his notes open as stacked panes.</span></li>
+    <li><a href="https://thesephist.com" target="_blank" rel="noopener">Linus Lee</a><span>Builds AI interfaces; a long index of projects.</span></li>
+    <li><a href="https://ines.io" target="_blank" rel="noopener">Ines Montani</a><span>Co-founder of Explosion (spaCy); colorful, illustrated personal site.</span></li>
+    <li><a href="https://maxbo.me" target="_blank" rel="noopener">Max Bo</a><span>Personal site with a hand-made feel.</span></li>
+    <li><a href="https://www.mattkeeter.com" target="_blank" rel="noopener">Matt Keeter</a><span>Graphics and CAD engineer; plain homepage, deep project writeups.</span></li>
+    <li><a href="https://devonzuegel.com" target="_blank" rel="noopener">Devon Zuegel</a><span>Writer and organizer; essay-first homepage.</span></li>
+  </ul>
+</main>
+</body>
+</html>

@@ -34,7 +34,7 @@
     "email": "mailto:peterlujh@gmail.com",
     "jobTitle": "Mathematics student",
     "affiliation": { "@type": "CollegeOrUniversity", "name": "University of Toronto", "url": "https://www.utoronto.ca" },
-    "knowsAbout": ["Mechanistic interpretability", "Machine learning", "Mathematics"],
+    "knowsAbout": ["AI safety", "Mechanistic interpretability", "Latent reasoning", "Machine learning", "Mathematics"],
     "award": "Silver medal, International AI Olympiad 2026",
     "sameAs": ["https://github.com/PeterLurf", "https://www.linkedin.com/in/peter-lurf"]
   }
@@ -64,12 +64,12 @@
     <h1>Peter Lu</h1>
 
     <p>I'm a first-year math student at the <a href="https://www.utoronto.ca">University of Toronto</a>, interested in
-      mechanistic interpretability: working out what neural networks are doing on the inside. Lately I've been
-      studying looped language models, and whether they can tell you about the reasoning they do in their hidden
-      states.</p>
+      AI safety, mechanistic interpretability (working out what neural networks are doing on the inside) and latent
+      reasoning. Lately I've been studying looped language models, and whether they can tell you about the reasoning
+      they do in their hidden states.</p>
     <p>In 2026 I was on Team Canada at the International AI Olympiad in Slovenia, where I won a
-      <a href="#awards">silver medal</a>. In high school I started the math, STEM and AI clubs at Unionville, which
-      taught over 1,500 students.</p>
+      <a href="#awards">silver medal</a>. In high school I ran the math, AI/ML and STEM-ED clubs at Unionville; the
+      STEM-ED workshops reached over 1,500 students.</p>
     <p>I'm looking for an undergraduate research position in interpretability. If you think I'd be a good fit,
       <a href="mailto:peterlujh@gmail.com">send me an email</a>.</p>
 
@@ -80,11 +80,22 @@
           sentence had been changed. The answer is easy to read off its activations (96.9&ndash;100% by subtracting a
           clean run, 99.5% with a LoRA readout), but the model's own answers are at chance.</span>
         <span class="v">Mechanistic interpretability</span></li>
-      <li><a class="t" href="https://github.com/PeterLurf/apart-collusion-sprint-2026">How a Colluding Monitor Uses Its Own Suspicion Against Itself</a>
-        <span class="v">Apart Research AI Collusion Sprint, October 2026</span></li>
-      <!-- EDIT: add <span class="d">one or two sentences on the question</span> like the project above -->
-      <li><span class="t">Latent Reasoning</span>
+      <li><a class="t" href="https://github.com/PeterLurf/latent-reasoning">Latent Reasoning</a>
+        <span class="d">Can a language model reason in its hidden states without writing out its steps? On permutation
+          tracking, GPT-2 carries the state in latent thoughts and stays exact out to 2,048 steps after training on
+          128, at 0.3&ndash;0.6&times; the compute of writing the state out.</span>
         <span class="v">In progress</span></li>
+      <li><a class="t" href="https://github.com/PeterLurf/apart-collusion-sprint-2026">Reading the Decoder: Colluding Monitors Reuse Their Own Evidence Heads</a>
+        <span class="d">When an LLM code-review monitor colludes with the model it's checking, about 20 attention heads that
+          normally carry evidence of a backdoor carry the hidden signal as evidence of clean code instead. Patching
+          them undoes 85% of the collusion, and a linear probe on the monitor catches attacks the monitor lets
+          through.</span>
+        <span class="v">Apart Research AI Collusion Sprint, October 2026</span></li>
+      <li><a class="t" href="https://github.com/PeterLurf/linebreak-twist">Linebreak Heads in Open-Weight LMs</a>
+        <span class="d">Claude 3.5 Haiku decides where to break a line with a few attention heads that compare a
+          character count with the previous line's length. 15 of 16 open models I checked (Gemma-2, Qwen2.5, Pythia,
+          GPT-2) build the same heads, and clamping the count makes them break lines 2&ndash;8 characters late.</span>
+        <span class="v">October 2026</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/BlazeShield">BlazeShield: RL for Wildfire Containment</a>
         <span class="d">Q-learning to place firebreaks in a PDE wildfire simulation.</span>
         <span class="v">SproutHacks</span></li>
@@ -118,11 +129,15 @@
     <h2 id="experience">Experience</h2>
     <ul class="list">
       <li><span class="t">Team Canada, International AI Olympiad</span>
+        <span class="d">Silver medal at IAIO 2026 in Slovenia, after placing 2nd on the Canadian selection test.</span>
         <span class="v">January 2026 &ndash; present</span></li>
       <li><span class="t">Administrative Coordinator, Ontario Competitive Mathematics Committee</span>
-        <span class="v">December 2024 &ndash; 2026</span></li>
-      <li><span class="t">Founder and President, Math, STEM-ED and AI clubs, Unionville High School</span>
-        <span class="v">2022 &ndash; 2026 &middot; 1,500+ students, 20+ student instructors</span></li>
+        <span class="v">December 2024 &ndash; present</span></li>
+      <li><span class="t">President, Math, AI/ML and STEM-ED clubs, Unionville High School</span>
+        <span class="d">Taught competition math lessons and problem sets, built an AI/ML curriculum (club certified by
+          IOAI Canada), and led a team of student instructors running CS and robotics workshops for Grades 8&ndash;9,
+          reaching 1,500+ students.</span>
+        <span class="v">September 2022 &ndash; September 2026</span></li>
     </ul>
 
     <footer>Last updated November 2026</footer>

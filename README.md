@@ -61,9 +61,11 @@ Why a Python script and not Jekyll: Jekyll needs Ruby, which isn't installed her
 
 ## Compute spend
 
-The homepage's Compute section shows what you've spent on Vast.ai, RunPod and Modal. Every day at 09:00 UTC (and on every push) GitHub runs `spend.py`, which asks each provider's billing API for your totals and writes them to `compute.json`, and `build.py` turns that into the section. The section stays hidden until at least one total is above $0.
+The homepage's Compute section shows what you've spent on Vast.ai, RunPod and Modal. Every day at 09:00 UTC (and on every push) GitHub runs `spend.py`, which asks each provider's billing API for every month it still has and updates a month-by-month record in `compute.json`; `build.py` adds that up for the section. The section stays hidden until there's some spending, and in local previews (where there's no `compute.json`).
 
-The API keys live in GitHub, not in the site: Settings > Secrets and variables > Actions > New repository secret, named `VAST_API_KEY`, `RUNPOD_API_KEY`, `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET`. Leave one out and that provider keeps whatever total is in `compute.json`, which you can also edit by hand (for a provider with no API, or spending from before).
+The record lives on the `data` branch, not on `main`, so the daily update never clashes with your pushes. Months a provider stops reporting (Modal keeps about a year) stay on the record, so it keeps the full history. To add older spending or a provider with no API, edit `compute.json` on the `data` branch on GitHub.
+
+The API keys live in GitHub, not in the site: Settings > Secrets and variables > Actions, named `VAST` (or `VAST_API_KEY`), `RUNPOD` (or `RUNPOD_API_KEY`), and `MODAL` (both Modal tokens) or `MODAL_TOKEN_ID` plus `MODAL_TOKEN_SECRET`. Leave one out and that provider keeps its months as they are.
 
 ## Link previews and search
 

@@ -1,18 +1,24 @@
-"""Adds up what I've spent on cloud GPUs and writes the totals to compute.json.
+"""Keeps a month-by-month record of what I've spent on cloud GPUs, in compute.json.
 
     python spend.py
 
 GitHub runs this once a day (see .github/workflows/deploy.yml) with API keys kept as repository secrets,
-so the keys never end up in the site: only the totals in compute.json do. build.py then writes those
-totals into the homepage's Compute section.
+so the keys never end up in the site: only the monthly amounts in compute.json do. build.py then adds
+them up for the homepage's Compute section.
+
+The record lives on the repository's `data` branch, not on main, so the daily update never gets in the
+way of your own pushes. Each run asks every provider for all the months it still has and updates those;
+months a provider no longer reports (Modal keeps about a year) stay as they were, so the record keeps
+the full history even after a provider forgets it. To add spending from before (or from a provider with
+no API), edit compute.json on the data branch on GitHub: "months" > provider > "YYYY-MM": dollars.
 
 The keys it reads (Settings > Secrets and variables > Actions on GitHub):
-  VAST_API_KEY                            console.vast.ai > Account > API keys
-  RUNPOD_API_KEY                          runpod.io > Settings > API keys (read-only is enough)
+  VAST_API_KEY or VAST                    console.vast.ai > Account > API keys
+  RUNPOD_API_KEY or RUNPOD                runpod.io > Settings > API keys (read-only is enough)
   MODAL_TOKEN_ID and MODAL_TOKEN_SECRET   modal.com > Settings > API tokens
+    (or both in one MODAL secret)
 
-A provider whose key is missing, or whose API fails, keeps the total already in compute.json,
-so the site never drops to $0 because of a hiccup. You can also edit compute.json by hand.
+A provider whose key is missing, or whose API fails, keeps its months as they are.
 """
 import datetime as dt
 import json
@@ -20,10 +26,11 @@ import os
 import re
 import urllib.parse
 import urllib.request
+from collections import defaultdict
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent / "compute.json"
-SINCE = "2020-01-01"   # before my first GPU rental, so every charge is counted
+SINCE = dt.date(2022, 1, 1)   # before my first GPU rental, so every charge is counted
 
 
 def get(url, key):
@@ -35,39 +42,44 @@ def get(url, key):
 
 
 def vast(key):
-    # Vast is prepaid: every dollar spent was first paid in, so add up the payments (credits), not the charges.
+    # Vast is prepaid: every dollar spent was first paid in, so count the payments (credits), not the charges.
     q = urllib.parse.urlencode({"owner": "me", "sdate": 0, "edate": int(dt.datetime.now().timestamp()),
                                 "inc_charges": "false"})
-    rows = get(f"https://console.vast.ai/api/v0/users/me/invoices?{q}", key)["invoices"]
-    return sum(abs(float(r["amount"])) for r in rows if r.get("type") == "payment")
+    months = defaultdict(float)
+    for r in get(f"https://console.vast.ai/api/v0/users/me/invoices?{q}", key)["invoices"]:
+        if r.get("type") == "payment":
+            when = dt.datetime.fromtimestamp(float(r.get("timestamp") or 0), dt.timezone.utc)
+            months[f"{when:%Y-%m}"] += abs(float(r["amount"]))
+    return months
 
 
 def runpod(key):
-    # Usage for Pods, serverless endpoints and network storage, one bucket per year.
-    q = urllib.parse.urlencode({"bucketSize": "year", "startTime": f"{SINCE}T00:00:00Z",
+    # Usage for Pods, serverless endpoints and network storage, one bucket per month.
+    q = urllib.parse.urlencode({"bucketSize": "month", "startTime": f"{SINCE}T00:00:00Z",
                                 "endTime": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
-    return sum(float(r.get("amount") or 0)
-               for kind in ("pods", "endpoints", "networkvolumes")
-               for r in get(f"https://rest.runpod.io/v1/billing/{kind}?{q}", key))
+    months = defaultdict(float)
+    for kind in ("pods", "endpoints", "networkvolumes"):
+        for r in get(f"https://rest.runpod.io/v1/billing/{kind}?{q}", key):
+            months[r["time"][:7]] += float(r.get("amount") or 0)
+    return months
 
 
 def modal(_):
     import modal as m   # reads MODAL_TOKEN_ID and MODAL_TOKEN_SECRET from the environment
     # One summary per monthly billing cycle. billed_cost is what Modal actually charged, after the
-    # plan's free credits, so it's the out-of-pocket part. Modal keeps about a year of history.
+    # plan's free credits, so it's the out-of-pocket part. Months it no longer keeps raise an error.
     billing = m.Workspace.from_context().billing
     today = dt.date.today()
-    total, months, errors = 0.0, 0, []
-    for back in range(12, -1, -1):
-        y, mo = divmod(today.year * 12 + today.month - 1 - back, 12)
+    months, errors = {}, []
+    for i in range(SINCE.year * 12 + SINCE.month - 1, today.year * 12 + today.month):
+        cycle = f"{i // 12}-{i % 12 + 1:02d}"
         try:
-            total += float(billing.summary(cycle=f"{y}-{mo + 1:02d}").billed_cost)
-            months += 1
-        except Exception as e:   # a month before the account existed, or past the history limit
+            months[cycle] = float(billing.summary(cycle=cycle).billed_cost)
+        except Exception as e:
             errors.append(e)
     if not months:
         raise errors[-1]
-    return total
+    return months
 
 
 PROVIDERS = {"Vast.ai": (vast, "VAST_API_KEY"), "RunPod": (runpod, "RUNPOD_API_KEY"), "Modal": (modal, "MODAL_TOKEN_ID")}
@@ -87,22 +99,23 @@ def modal_tokens():
 def main():
     modal_tokens()
     data = json.loads(DATA.read_text(encoding="utf-8")) if DATA.exists() else {}
-    totals = data.get("providers", {})
+    record = data.get("months", {})
     fetched = False
     for name, (fetch, env) in PROVIDERS.items():
-        key = os.environ.get(env)
-        if not key:
-            print(f"{name}: no {env}, keeping ${totals.get(name, 0):,.2f}")
+        mine = record.setdefault(name, {})
+        if not os.environ.get(env):
+            print(f"{name}: no {env}, keeping ${sum(mine.values()):,.2f}")
             continue
         try:
-            totals[name] = round(fetch(key), 2)
+            got = {k: round(v, 2) for k, v in fetch(os.environ[env]).items() if v}
+            mine.update(got)
             fetched = True
-            print(f"{name}: ${totals[name]:,.2f}")
+            span = f"{min(got)} to {max(got)}" if got else "no spending"
+            print(f"{name}: reported {span}; ${sum(mine.values()):,.2f} over {len(mine)} month(s) on record")
         except Exception as e:   # one provider's outage shouldn't stop the others or the deploy
-            print(f"{name}: failed ({e}), keeping ${totals.get(name, 0):,.2f}")
-    data["providers"] = totals
-    if fetched:
-        data["updated"] = dt.date.today().isoformat()
+            print(f"{name}: failed ({e}), keeping ${sum(mine.values()):,.2f}")
+        record[name] = dict(sorted(mine.items()))
+    data = {"updated": dt.date.today().isoformat() if fetched else data.get("updated"), "months": record}
     DATA.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 

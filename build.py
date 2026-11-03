@@ -164,19 +164,22 @@ def post_li(p, dated):
 
 
 def compute_section():
-    """The homepage's Compute section, from the totals spend.py writes to compute.json. Left out until there are any."""
+    """The homepage's Compute section, from the monthly amounts spend.py keeps in compute.json.
+    Left out until there's any spending (or when there's no compute.json, as in a local preview)."""
     f = SITE / "compute.json"
     data = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
-    spent = sorted(((k, v) for k, v in data.get("providers", {}).items() if v > 0), key=lambda kv: -kv[1])
-    if not spent:
+    record = {k: m for k, m in data.get("months", {}).items() if sum(m.values()) > 0}
+    if not record:
         return ""
+    spent = sorted(((k, sum(m.values())) for k, m in record.items()), key=lambda kv: -kv[1])
     rows = "\n".join(f"      <li><span>{html.escape(k)}</span><span>${v:,.0f}</span></li>" for k, v in spent)
+    first = dt.date.fromisoformat(min(min(m) for m in record.values()) + "-01")
     updated = f"; last updated {fmt(dt.date.fromisoformat(data['updated']))}" if data.get("updated") else ""
     return (f'    <h2 id="compute">Compute</h2>\n'
             f'    <p>I pay for my research compute out of my own pocket. So far that\'s '
             f'<strong>${sum(v for _, v in spent):,.0f}</strong>:</p>\n'
             f'    <ul class="bill">\n{rows}\n    </ul>\n'
-            f'    <p class="fine">Pulled from each provider\'s billing API every day{updated}.</p>\n')
+            f'    <p class="fine">Every month since {first:%B %Y}, from each provider\'s billing API{updated}.</p>\n')
 
 
 def main():

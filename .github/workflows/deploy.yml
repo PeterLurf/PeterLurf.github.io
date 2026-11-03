@@ -13,7 +13,7 @@ on:
     - cron: "0 9 * * *"   # every day at 09:00 UTC, so the Compute totals stay current
 
 permissions:
-  contents: read
+  contents: write   # to save the compute history on the data branch
   pages: write
   id-token: write
 
@@ -37,7 +37,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Totals only: the keys stay in GitHub's secrets and never reach the published site.
+      # The month-by-month record of compute spend lives on the data branch (see spend.py).
+      - name: Load compute history
+        run: |
+          if git fetch -q origin data && git show origin/data:compute.json > "$RUNNER_TEMP/compute.json"; then
+            cp "$RUNNER_TEMP/compute.json" compute.json
+          else
+            echo "No history yet: starting one"
+          fi
+
+      # Monthly amounts only: the keys stay in GitHub's secrets and never reach the published site.
       - name: Fetch compute spend
         env:
           VAST_API_KEY: ${{ secrets.VAST_API_KEY || secrets.VAST }}
@@ -48,6 +57,20 @@ jobs:
         run: |
           pip install modal
           python spend.py
+
+      - name: Save compute history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          if git rev-parse -q --verify origin/data > /dev/null; then
+            git worktree add -q --detach "$RUNNER_TEMP/data" origin/data
+          else
+            git worktree add -q --orphan -b data "$RUNNER_TEMP/data"
+          fi
+          cp compute.json "$RUNNER_TEMP/data/compute.json"
+          cd "$RUNNER_TEMP/data"
+          git add compute.json
+          git diff --cached --quiet || { git commit -q -m "Update compute history" && git push -q origin HEAD:data; }
 
       - name: Build
         run: |

@@ -1,0 +1,80 @@
+# Temporary: one-off look at what the RunPod and Modal billing APIs return. Delete after use.
+name: Debug compute spend
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - env:
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY || secrets.RUNPOD }}
+          MODAL: ${{ secrets.MODAL }}
+        run: |
+          pip install -q modal
+          python - <<'EOF'
+          import datetime as dt, os, urllib.parse
+          from collections import defaultdict
+          import spend
+          spend.modal_tokens()
+          key = os.environ["RUNPOD_API_KEY"]
+          now = dt.datetime.now(dt.timezone.utc)
+          iso = lambda t: t.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+          def rp(kind, **q):
+              url = f"https://rest.runpod.io/v1/billing/{kind}?" + urllib.parse.urlencode(q)
+              try:
+                  rows = spend.get(url, key)
+              except Exception as e:
+                  return f"error {e}"
+              byt = defaultdict(float)
+              for r in rows:
+                  byt[r["time"][:10]] += float(r.get("amount") or 0)
+              return f"{len(rows)} rows " + ", ".join(f"{k}: {v:.2f}" for k, v in sorted(byt.items()) if v)
+
+          print("== RunPod ==")
+          for kind in ("pods", "endpoints", "networkvolumes"):
+              print(kind, "defaults:", rp(kind))
+              print(kind, "month since 2022:", rp(kind, bucketSize="month", startTime="2022-01-01T00:00:00Z", endTime=iso(now)))
+              print(kind, "year since 2022:", rp(kind, bucketSize="year", startTime="2022-01-01T00:00:00Z", endTime=iso(now)))
+              print(kind, "month, by pod:", rp(kind, bucketSize="month", grouping="podId", startTime="2022-01-01T00:00:00Z", endTime=iso(now)) if kind == "pods" else "")
+              # day buckets, one 30-day window at a time going back ~2 years
+              hits = []
+              for back in range(24):
+                  end = now - dt.timedelta(days=30 * back)
+                  out = rp(kind, bucketSize="day", startTime=iso(end - dt.timedelta(days=30)), endTime=iso(end))
+                  if not out.startswith("0 rows"):
+                      hits.append(f"[{(end - dt.timedelta(days=30)):%Y-%m-%d}..{end:%Y-%m-%d}] {out[:300]}")
+              print(kind, "day windows:", *hits, sep="\n  ")
+
+          print("== Modal ==")
+          import modal as m
+          ws = m.Workspace.from_context()
+          billing = ws.billing
+          for attr in ("name", "workspace_name"):
+              try:
+                  print("workspace", attr, getattr(ws, attr))
+              except Exception as e:
+                  pass
+          today = dt.date.today()
+          for i in range(today.year * 12 + today.month - 1 - 14, today.year * 12 + today.month):
+              cycle = f"{i // 12}-{i % 12 + 1:02d}"
+              try:
+                  s = billing.summary(cycle=cycle)
+                  print(cycle, "metered", s.metered_cost, "billed", s.billed_cost, "adjustments", dict(s.adjustments))
+              except Exception as e:
+                  print(cycle, "error", str(e)[:150])
+          try:
+              rows = billing.report(start=dt.datetime.now() - dt.timedelta(days=30), resolution="d")
+              print("last 30 days report:", len(rows), "rows, cost", sum(float(r.cost) for r in rows))
+          except Exception as e:
+              print("report error", str(e)[:200])
+          EOF

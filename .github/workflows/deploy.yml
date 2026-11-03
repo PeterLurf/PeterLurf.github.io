@@ -40,10 +40,11 @@ jobs:
       # Totals only: the keys stay in GitHub's secrets and never reach the published site.
       - name: Fetch compute spend
         env:
-          VAST_API_KEY: ${{ secrets.VAST_API_KEY }}
-          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+          VAST_API_KEY: ${{ secrets.VAST_API_KEY || secrets.VAST }}
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY || secrets.RUNPOD }}
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          MODAL: ${{ secrets.MODAL }}   # or both Modal tokens in one secret, e.g. the "modal token set ..." line
         run: |
           pip install modal
           python spend.py

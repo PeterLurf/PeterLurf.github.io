@@ -17,6 +17,7 @@ so the site never drops to $0 because of a hiccup. You can also edit compute.jso
 import datetime as dt
 import json
 import os
+import re
 import urllib.parse
 import urllib.request
 from collections import defaultdict
@@ -62,7 +63,19 @@ def modal(_):
 PROVIDERS = {"Vast.ai": (vast, "VAST_API_KEY"), "RunPod": (runpod, "RUNPOD_API_KEY"), "Modal": (modal, "MODAL_TOKEN_ID")}
 
 
+def modal_tokens():
+    """Both Modal tokens can also come in one MODAL secret: token IDs start with ak-, secrets with as-."""
+    both = os.environ.get("MODAL", "")
+    for env, prefix in (("MODAL_TOKEN_ID", "ak-"), ("MODAL_TOKEN_SECRET", "as-")):
+        m = re.search(rf"\b{prefix}[A-Za-z0-9]+", both)
+        if m and not os.environ.get(env):
+            os.environ[env] = m.group(0)
+        elif both and not m:
+            print(f"Modal: the MODAL secret has no {prefix}... token in it")
+
+
 def main():
+    modal_tokens()
     data = json.loads(DATA.read_text(encoding="utf-8")) if DATA.exists() else {}
     totals = data.get("providers", {})
     fetched = False

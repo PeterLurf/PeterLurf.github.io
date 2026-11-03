@@ -20,12 +20,10 @@ import os
 import re
 import urllib.parse
 import urllib.request
-from collections import defaultdict
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent / "compute.json"
-SINCE = "2020-01-01"         # before my first GPU rental, so every charge is counted
-MODAL_FREE_CREDIT = 30       # Modal covers the first $30 of each month on the free plan; that part isn't out of pocket
+SINCE = "2020-01-01"   # before my first GPU rental, so every charge is counted
 
 
 def get(url, key):
@@ -55,18 +53,21 @@ def runpod(key):
 
 def modal(_):
     import modal as m   # reads MODAL_TOKEN_ID and MODAL_TOKEN_SECRET from the environment
-    # Modal reports go back only to the start of the month a year ago (older months can't be counted),
-    # and a daily report covers at most 31 days, so ask for one month at a time.
+    # One summary per monthly billing cycle. billed_cost is what Modal actually charged, after the
+    # plan's free credits, so it's the out-of-pocket part. Modal keeps about a year of history.
+    billing = m.Workspace.from_context().billing
     today = dt.date.today()
-    month = max(dt.datetime.fromisoformat(SINCE), dt.datetime(today.year - 1, today.month, 1))
-    months = defaultdict(float)
-    while month.date() <= today:
-        after = dt.datetime(month.year + month.month // 12, month.month % 12 + 1, 1)
-        end = min(after, dt.datetime.now(dt.timezone.utc).replace(tzinfo=None))   # not into the future
-        for r in m.billing.workspace_billing_report(start=month, end=end, resolution="d"):
-            months[r["interval_start"].strftime("%Y-%m")] += float(r["cost"])
-        month = after
-    return sum(max(0.0, cost - MODAL_FREE_CREDIT) for cost in months.values())
+    total, months, errors = 0.0, 0, []
+    for back in range(12, -1, -1):
+        y, mo = divmod(today.year * 12 + today.month - 1 - back, 12)
+        try:
+            total += float(billing.summary(cycle=f"{y}-{mo + 1:02d}").billed_cost)
+            months += 1
+        except Exception as e:   # a month before the account existed, or past the history limit
+            errors.append(e)
+    if not months:
+        raise errors[-1]
+    return total
 
 
 PROVIDERS = {"Vast.ai": (vast, "VAST_API_KEY"), "RunPod": (runpod, "RUNPOD_API_KEY"), "Modal": (modal, "MODAL_TOKEN_ID")}

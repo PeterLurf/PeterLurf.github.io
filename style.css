@@ -78,6 +78,9 @@ h2 + .note { margin: 0 0 16px; color: var(--muted); font-size: 15.5px; }
 .exps .s { display: block; margin-top: 2px; font-size: 16px; }
 .exps .v { display: block; color: var(--muted); font-size: 15.5px; }
 
+.cats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 560px; }
+.cats img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
 footer { margin-top: 56px; color: var(--muted); font-size: 14px; }
 
 /* ---------- Posts ---------- */

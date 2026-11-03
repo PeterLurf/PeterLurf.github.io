@@ -34,6 +34,18 @@ main { max-width: 640px; min-width: 0; }
 .photo { width: 144px; height: 144px; border-radius: 4px; display: grid; place-items: center; background: var(--link); color: #fff; font-size: 34px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; object-fit: cover; }
 a.photo:hover { text-decoration: none; }
 .photo img { display: block; width: 144px; height: 144px; border-radius: 4px; object-fit: cover; }   /* fixed size, so the layout never jumps while it loads */
+/* Compute spent: total, a bar split by provider, then one line per provider */
+.spend { display: flex; flex-direction: column; width: 144px; margin: -6px 0 18px; font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.spend-k { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.spend-k svg { width: 15px; height: 15px; stroke-width: 1.6; }
+.spend-v { color: var(--ink); font-size: 20px; font-weight: 600; line-height: 1.2; }
+.spend-v small { color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; }
+.spend-note { margin-top: 6px; color: var(--muted); line-height: 1.4; }
+.spend-bar { display: flex; height: 6px; margin: 6px 0 5px; border-radius: 3px; overflow: hidden; background: var(--rule); }
+.spend-bar span { display: block; height: 100%; }
+.spend i { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 2px; vertical-align: 0; }
+.spend b { float: right; color: var(--text); font-weight: 500; }
+.spend > span:not([class]) { color: var(--muted); }
 .side ul { list-style: none; margin: 0; padding: 0; font-size: 15.5px; }
 .side li a { display: flex; align-items: center; gap: 9px; padding: 3px 0; color: var(--text); font-weight: 400; }
 .side li a:hover { color: var(--link); }
@@ -78,10 +90,6 @@ h2 + .note { margin: 0 0 16px; color: var(--muted); font-size: 15.5px; }
 .exps .s { display: block; margin-top: 2px; font-size: 16px; }
 .exps .v { display: block; color: var(--muted); font-size: 15.5px; }
 
-.bill { list-style: none; max-width: 300px; margin: 0 0 12px; padding: 0; font-variant-numeric: tabular-nums; }
-.bill li { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--rule); }
-.fine { color: var(--muted); font-size: 14px; }
-
 .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 560px; }
 .cats img { display: block; width: 100%; height: auto; border-radius: 4px; }
 
@@ -121,7 +129,8 @@ pre code { background: none; padding: 0; font-size: inherit; }
   .side { position: static; display: grid; grid-template-columns: 104px 1fr; gap: 6px 18px; align-items: center; margin-bottom: 28px; }
   .photo { width: 104px; height: 104px; font-size: 26px; margin: 0; }
   .photo img { width: 104px; height: 104px; }
-  .site-nav { grid-column: 1 / -1; flex-direction: row; gap: 20px; margin-top: 10px; padding-top: 10px; }
+  .spend { grid-column: 1 / -1; order: 1; width: 100%; max-width: 320px; margin: 10px 0 0; }
+  .site-nav { order: 2; grid-column: 1 / -1; flex-direction: row; gap: 20px; margin-top: 10px; padding-top: 10px; }
   .posts li { grid-template-columns: 1fr; gap: 0; }
   .exps li { grid-template-columns: 1fr; gap: 10px; }
   .exps .fig { width: 100%; max-width: 320px; height: 120px; }

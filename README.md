@@ -61,9 +61,9 @@ Why a Python script and not Jekyll: Jekyll needs Ruby, which isn't installed her
 
 ## Compute spend
 
-The homepage's Compute section shows what you've spent on Vast.ai, RunPod and Modal. Every day at 09:00 UTC (and on every push) GitHub runs `spend.py`, which asks each provider's billing API for every month it still has and updates a month-by-month record in `compute.json`; `build.py` adds that up for the section. The section stays hidden until there's some spending, and in local previews (where there's no `compute.json`).
+The box under the sidebar photo shows what you've spent on Vast.ai, RunPod and Modal. Every day at 09:00 UTC (and on every push) GitHub runs `spend.py`, which asks each provider's billing API for every month it still has and updates a month-by-month record in `compute.json`; `build.py` adds that up into the box. The box stays hidden until there's some spending, and in local previews (where there's no `compute.json`).
 
-The record lives on the `data` branch, not on `main`, so the daily update never clashes with your pushes. Months a provider stops reporting (Modal keeps about a year) stay on the record, so it keeps the full history. To add older spending or a provider with no API, edit `compute.json` on the `data` branch on GitHub.
+The record lives on the `data` branch, not on `main`, so the daily update never clashes with your pushes. Months a provider stops reporting (Modal keeps about a year) stay on the record, so it keeps the full history. To correct a month by hand (older spending, a provider with no API, or credits the API leaves out, like Modal grant credits), edit `compute.json` on the `data` branch on GitHub and put it under `"manual"`, e.g. `"manual": {"Modal": {"2026-10": 102.71}}`. A manual month replaces the fetched one and is never overwritten.
 
 The API keys live in GitHub, not in the site: Settings > Secrets and variables > Actions, named `VAST` (or `VAST_API_KEY`), `RUNPOD` (or `RUNPOD_API_KEY`), and `MODAL` (both Modal tokens) or `MODAL_TOKEN_ID` plus `MODAL_TOKEN_SECRET`. Leave one out and that provider keeps its months as they are.
 

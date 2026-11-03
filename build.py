@@ -11,7 +11,7 @@ Run it after you add or edit a post, or change templates/side.html. It:
      version to the style.css link, so browsers never mix old and new files
   5. writes each page's link-preview tags, icons and canonical URL from its <title> and description
   6. writes sitemap.xml so search engines find every page
-  7. writes the homepage's Compute section from compute.json (kept up to date by spend.py)
+  7. puts the compute-spend box under the sidebar photo, from compute.json (kept up to date by spend.py)
 
 Needs Python 3 and the markdown package (pip install markdown). Commit the generated files:
 GitHub Pages serves them as they are, with no build step on its side.
@@ -163,23 +163,37 @@ def post_li(p, dated):
     return f'      <li>{link}<span class="v">{fmt(p["date"])}</span></li>'
 
 
-def compute_section():
-    """The homepage's Compute section, from the monthly amounts spend.py keeps in compute.json.
-    Left out until there's any spending (or when there's no compute.json, as in a local preview)."""
+SPEND_COLORS = ["#1d1da8", "#6464dc", "#adadf0", "#d4d4f7"]   # biggest provider first
+# A graphics card: board, fan, cooling fins, PCIe contacts and the bracket.
+GPU = ('<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="19" height="10" rx="1.5"/>'
+       '<circle cx="9" cy="11" r="2.75"/><path d="M15 9h4M15 11h4M15 13h4M7 16v2.5h8V16M3 6V4H1"/></svg>')
+
+
+def compute_widget():
+    """The compute-spend box under the sidebar photo, from the monthly amounts spend.py keeps in compute.json
+    (a month under "manual" replaces the fetched one). Left out when there's nothing, as in a local preview."""
     f = SITE / "compute.json"
     data = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
-    record = {k: m for k, m in data.get("months", {}).items() if sum(m.values()) > 0}
-    if not record:
+    manual = data.get("manual", {})
+    totals = {k: sum({**data.get("months", {}).get(k, {}), **manual.get(k, {})}.values())
+              for k in {*data.get("months", {}), *manual}}
+    spent = sorted(((k, v) for k, v in totals.items() if v > 0), key=lambda kv: -kv[1])
+    if not spent:
         return ""
-    spent = sorted(((k, sum(m.values())) for k, m in record.items()), key=lambda kv: -kv[1])
-    rows = "\n".join(f"      <li><span>{html.escape(k)}</span><span>${v:,.0f}</span></li>" for k, v in spent)
-    first = dt.date.fromisoformat(min(min(m) for m in record.values()) + "-01")
-    updated = f"; last updated {fmt(dt.date.fromisoformat(data['updated']))}" if data.get("updated") else ""
-    return (f'    <h2 id="compute">Compute</h2>\n'
-            f'    <p>I pay for my research compute out of my own pocket. So far that\'s '
-            f'<strong>${sum(v for _, v in spent):,.0f}</strong>:</p>\n'
-            f'    <ul class="bill">\n{rows}\n    </ul>\n'
-            f'    <p class="fine">Every month since {first:%B %Y}, from each provider\'s billing API{updated}.</p>\n')
+    total = sum(v for _, v in spent)
+    colors = dict(zip((k for k, _ in spent), SPEND_COLORS * 2))
+    bar = "".join(f'<span style="width:{v / total * 100:.1f}%;background:{colors[k]}"></span>' for k, v in spent)
+    rows = "".join(f'\n      <span><i style="background:{colors[k]}"></i>{html.escape(k)}<b>${v:,.0f}</b></span>'
+                   for k, v in spent)
+    label = ", ".join(f"{k} ${v:,.0f}" for k, v in spent)
+    updated = f' title="Updated daily from each provider\'s billing API; last on {fmt(dt.date.fromisoformat(data["updated"]))}"' \
+        if data.get("updated") else ""
+    return (f'    <div class="spend"{updated}>\n'
+            f'      <span class="spend-k">{GPU}Compute spent</span>\n'
+            f'      <span class="spend-v">${total:,.0f} <small>USD</small></span>\n'
+            f'      <span class="spend-bar" role="img" aria-label="{label}">{bar}</span>{rows}\n'
+            f'      <span class="spend-note">I pay for my compute out of pocket.</span>\n'
+            f'    </div>\n')
 
 
 def main():
@@ -211,8 +225,7 @@ def main():
     lists = {"posts": f'    <ul class="posts">\n{full}\n    </ul>' if posts else empty,
              # the homepage's whole Writing section, left out until there's a post
              "latest": f'    <h2 id="writing">Writing</h2>\n    <ul class="list">\n{latest}\n    </ul>\n'
-                       f'    <p class="more"><a href="/blog/">All posts</a></p>' if posts else "",
-             "compute": compute_section()}
+                       f'    <p class="more"><a href="/blog/">All posts</a></p>' if posts else ""}
 
     # 3. feed
     entries = "".join(
@@ -237,7 +250,7 @@ def main():
 """, encoding="utf-8")
 
     # 4 and 5. shared sidebar, lists, head tags, footer date and file versions in every page
-    side = (SITE / "templates" / "side.html").read_text(encoding="utf-8").strip()
+    side = (SITE / "templates" / "side.html").read_text(encoding="utf-8").strip().replace("    {{compute}}\n", compute_widget())
     # Blog and Experiments appear in the nav only once they have something in them.
     exps = [d for d in (SITE / "experiments").iterdir() if (d / "index.html").exists()]
     empty = {"blog": not posts, "experiments": not exps}

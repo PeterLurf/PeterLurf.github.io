@@ -9,8 +9,11 @@ them up for the homepage's Compute section.
 The record lives on the repository's `data` branch, not on main, so the daily update never gets in the
 way of your own pushes. Each run asks every provider for all the months it still has and updates those;
 months a provider no longer reports (Modal keeps about a year) stay as they were, so the record keeps
-the full history even after a provider forgets it. To add spending from before (or from a provider with
-no API), edit compute.json on the data branch on GitHub: "months" > provider > "YYYY-MM": dollars.
+the full history even after a provider forgets it.
+
+To correct a month by hand (spending from before, a provider with no API, or credits the API leaves out),
+edit compute.json on the data branch on GitHub and add it under "manual": provider > "YYYY-MM": dollars.
+A manual month replaces the fetched one, and spend.py never changes it.
 
 The keys it reads (Settings > Secrets and variables > Actions on GitHub):
   VAST_API_KEY or VAST                    console.vast.ai > Account > API keys
@@ -127,7 +130,9 @@ def main():
         except Exception as e:   # one provider's outage shouldn't stop the others or the deploy
             print(f"{name}: failed ({e}), keeping ${sum(mine.values()):,.2f}")
         record[name] = dict(sorted(mine.items()))
-    data = {"updated": dt.date.today().isoformat() if fetched else data.get("updated"), "months": record}
+    data["months"] = record   # anything else in the file, like "manual", is left as it is
+    if fetched:
+        data["updated"] = dt.date.today().isoformat()
     DATA.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 

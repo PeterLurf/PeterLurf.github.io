@@ -29,7 +29,9 @@ MODAL_FREE_CREDIT = 30       # Modal covers the first $30 of each month on the f
 
 
 def get(url, key):
-    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {key}", "Accept": "application/json"})
+    # A named User-Agent: RunPod's Cloudflare turns away Python's default one (error 1010) before checking the key.
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {key}", "Accept": "application/json",
+                                               "User-Agent": "peterlurf.github.io spend.py"})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
 
@@ -53,7 +55,10 @@ def runpod(key):
 
 def modal(_):
     import modal as m   # reads MODAL_TOKEN_ID and MODAL_TOKEN_SECRET from the environment
-    rows = m.billing.workspace_billing_report(start=dt.datetime.fromisoformat(SINCE), resolution="d")
+    # Modal only reports back to the start of the month a year ago, so older months can't be counted.
+    today = dt.date.today()
+    start = max(dt.datetime.fromisoformat(SINCE), dt.datetime(today.year - 1, today.month, 1))
+    rows = m.billing.workspace_billing_report(start=start, resolution="d")
     months = defaultdict(float)
     for r in rows:
         months[r["interval_start"].strftime("%Y-%m")] += float(r["cost"])

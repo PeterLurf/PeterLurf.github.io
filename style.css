@@ -57,6 +57,9 @@ a.photo:hover { text-decoration: none; }
 
 /* ---------- Headings ---------- */
 h1 { margin: 0 0 16px; color: var(--ink); font-size: 30px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
+.links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: -6px 0 22px; font-size: 15px; }   /* socials under the name */
+.links a { display: inline-flex; align-items: center; gap: 7px; }
+.links svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 h2 { margin: 48px 0 16px; color: var(--ink); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
 h2 + .note { margin: 0 0 16px; color: var(--muted); font-size: 15.5px; }
 .more { font-size: 15.5px; }

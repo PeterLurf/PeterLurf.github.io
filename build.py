@@ -11,6 +11,7 @@ Run it after you add or edit a post, or change templates/side.html. It:
      version to the style.css link, so browsers never mix old and new files
   5. writes each page's link-preview tags, icons and canonical URL from its <title> and description
   6. writes sitemap.xml so search engines find every page
+  7. writes the homepage's Compute section from compute.json (kept up to date by spend.py)
 
 Needs Python 3 and the markdown package (pip install markdown). Commit the generated files:
 GitHub Pages serves them as they are, with no build step on its side.
@@ -28,6 +29,7 @@ Math: $inline$ and $$display$$ are rendered with KaTeX. Footnotes: text[^1] then
 import datetime as dt
 import hashlib
 import html
+import json
 import re
 import shutil
 import subprocess
@@ -161,6 +163,22 @@ def post_li(p, dated):
     return f'      <li>{link}<span class="v">{fmt(p["date"])}</span></li>'
 
 
+def compute_section():
+    """The homepage's Compute section, from the totals spend.py writes to compute.json. Left out until there are any."""
+    f = SITE / "compute.json"
+    data = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+    spent = sorted(((k, v) for k, v in data.get("providers", {}).items() if v > 0), key=lambda kv: -kv[1])
+    if not spent:
+        return ""
+    rows = "\n".join(f"      <li><span>{html.escape(k)}</span><span>${v:,.0f}</span></li>" for k, v in spent)
+    updated = f"; last updated {fmt(dt.date.fromisoformat(data['updated']))}" if data.get("updated") else ""
+    return (f'    <h2 id="compute">Compute</h2>\n'
+            f'    <p>I pay for my research compute out of my own pocket. So far that\'s '
+            f'<strong>${sum(v for _, v in spent):,.0f}</strong>:</p>\n'
+            f'    <ul class="bill">\n{rows}\n    </ul>\n'
+            f'    <p class="fine">Pulled from each provider\'s billing API every day{updated}.</p>\n')
+
+
 def main():
     posts = [read_post(f) for f in sorted((SITE / "posts").glob("*.md"))]
     posts = sorted((p for p in posts if not p["draft"]), key=lambda p: p["date"], reverse=True)
@@ -190,7 +208,8 @@ def main():
     lists = {"posts": f'    <ul class="posts">\n{full}\n    </ul>' if posts else empty,
              # the homepage's whole Writing section, left out until there's a post
              "latest": f'    <h2 id="writing">Writing</h2>\n    <ul class="list">\n{latest}\n    </ul>\n'
-                       f'    <p class="more"><a href="/blog/">All posts</a></p>' if posts else ""}
+                       f'    <p class="more"><a href="/blog/">All posts</a></p>' if posts else "",
+             "compute": compute_section()}
 
     # 3. feed
     entries = "".join(

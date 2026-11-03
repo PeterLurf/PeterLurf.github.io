@@ -78,6 +78,10 @@ h2 + .note { margin: 0 0 16px; color: var(--muted); font-size: 15.5px; }
 .exps .s { display: block; margin-top: 2px; font-size: 16px; }
 .exps .v { display: block; color: var(--muted); font-size: 15.5px; }
 
+.bill { list-style: none; max-width: 300px; margin: 0 0 12px; padding: 0; font-variant-numeric: tabular-nums; }
+.bill li { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--rule); }
+.fine { color: var(--muted); font-size: 14px; }
+
 .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 560px; }
 .cats img { display: block; width: 100%; height: auto; border-radius: 4px; }
 

@@ -59,6 +59,12 @@ Why a Python script and not Jekyll: Jekyll needs Ruby, which isn't installed her
 3. In `experiments/index.html`, replace "Nothing here yet" with the list in the comment below it. On the homepage, un-comment the Experiments section (it's just above Awards).
 4. Run `python build.py` to fill in the sidebar and the link-preview tags, and to add the page to the sitemap.
 
+## Compute spend
+
+The homepage's Compute section shows what you've spent on Vast.ai, RunPod and Modal. Every day at 09:00 UTC (and on every push) GitHub runs `spend.py`, which asks each provider's billing API for your totals and writes them to `compute.json`, and `build.py` turns that into the section. The section stays hidden until at least one total is above $0.
+
+The API keys live in GitHub, not in the site: Settings > Secrets and variables > Actions > New repository secret, named `VAST_API_KEY`, `RUNPOD_API_KEY`, `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET`. Leave one out and that provider keeps whatever total is in `compute.json`, which you can also edit by hand (for a provider with no API, or spending from before).
+
 ## Link previews and search
 
 Each page's `<head>` has an empty `<!-- meta -->` block. `build.py` fills it from the page's `<title>` and `<meta name="description">`: the link-preview tags (what LinkedIn, Discord or iMessage show when someone shares the link, with your photo), the canonical address and the icons. So to change a page's preview, change its title or description and rebuild. New pages need the empty block too; copy it from any existing page.

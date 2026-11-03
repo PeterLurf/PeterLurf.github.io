@@ -9,6 +9,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:   # adds a "Run workflow" button in the Actions tab
+  schedule:
+    - cron: "0 9 * * *"   # every day at 09:00 UTC, so the Compute totals stay current
 
 permissions:
   contents: read
@@ -35,6 +37,17 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Totals only: the keys stay in GitHub's secrets and never reach the published site.
+      - name: Fetch compute spend
+        env:
+          VAST_API_KEY: ${{ secrets.VAST_API_KEY }}
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+        run: |
+          pip install modal
+          python spend.py
+
       - name: Build
         run: |
           pip install markdown
@@ -42,7 +55,7 @@ jobs:
 
       # Publish only the site: leave out the mockups, templates and repository files.
       - name: Collect the site
-        run: rsync -a --exclude _site --exclude .git --exclude .github --exclude options --exclude templates ./ _site/
+        run: rsync -a --exclude _site --exclude .git --exclude .github --exclude options --exclude templates --exclude '*.py' ./ _site/
 
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

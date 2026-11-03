@@ -24,6 +24,7 @@ import datetime as dt
 import json
 import os
 import re
+import time
 import urllib.parse
 import urllib.request
 from collections import defaultdict
@@ -67,18 +68,29 @@ def runpod(key):
 def modal(_):
     import modal as m   # reads MODAL_TOKEN_ID and MODAL_TOKEN_SECRET from the environment
     # One summary per monthly billing cycle. billed_cost is what Modal actually charged, after the
-    # plan's free credits, so it's the out-of-pocket part. Months it no longer keeps raise an error.
+    # plan's free credits, so it's the out-of-pocket part. Modal keeps 12 months back from this one
+    # and rate-limits these requests, so ask only for those, a few seconds apart, and wait out a limit.
     billing = m.Workspace.from_context().billing
     today = dt.date.today()
+    this = today.year * 12 + today.month - 1
     months, errors = {}, []
-    for i in range(SINCE.year * 12 + SINCE.month - 1, today.year * 12 + today.month):
+    for i in range(max(this - 12, SINCE.year * 12 + SINCE.month - 1), this + 1):
         cycle = f"{i // 12}-{i % 12 + 1:02d}"
-        try:
-            months[cycle] = float(billing.summary(cycle=cycle).billed_cost)
-        except Exception as e:
-            errors.append(e)
+        for wait in (3, 20, 40, 60):
+            time.sleep(wait)
+            try:
+                months[cycle] = float(billing.summary(cycle=cycle).billed_cost)
+                break
+            except Exception as e:
+                if "rate limit" not in str(e).lower():
+                    errors.append(e)
+                    break
+        else:
+            errors.append(f"{cycle}: still rate-limited")
+    if errors:
+        print(f"Modal: {len(errors)} month(s) not fetched, kept as they were: {errors[-1]}")
     if not months:
-        raise errors[-1]
+        raise RuntimeError("no months fetched")
     return months
 
 

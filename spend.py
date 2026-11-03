@@ -55,13 +55,17 @@ def runpod(key):
 
 def modal(_):
     import modal as m   # reads MODAL_TOKEN_ID and MODAL_TOKEN_SECRET from the environment
-    # Modal only reports back to the start of the month a year ago, so older months can't be counted.
+    # Modal reports go back only to the start of the month a year ago (older months can't be counted),
+    # and a daily report covers at most 31 days, so ask for one month at a time.
     today = dt.date.today()
-    start = max(dt.datetime.fromisoformat(SINCE), dt.datetime(today.year - 1, today.month, 1))
-    rows = m.billing.workspace_billing_report(start=start, resolution="d")
+    month = max(dt.datetime.fromisoformat(SINCE), dt.datetime(today.year - 1, today.month, 1))
     months = defaultdict(float)
-    for r in rows:
-        months[r["interval_start"].strftime("%Y-%m")] += float(r["cost"])
+    while month.date() <= today:
+        after = dt.datetime(month.year + month.month // 12, month.month % 12 + 1, 1)
+        end = min(after, dt.datetime.now(dt.timezone.utc).replace(tzinfo=None))   # not into the future
+        for r in m.billing.workspace_billing_report(start=month, end=end, resolution="d"):
+            months[r["interval_start"].strftime("%Y-%m")] += float(r["cost"])
+        month = after
     return sum(max(0.0, cost - MODAL_FREE_CREDIT) for cost in months.values())
 
 

@@ -97,34 +97,22 @@
     <h2 id="research">Research</h2>
     <ul class="list">
       <li><a class="t" href="https://github.com/PeterLurf/too-rational-to-resist">Too Rational to Resist: Two Lies Can Hijack Frontier LLM Swarms</a>
-        <span class="d">Frontier LLM agents weigh their peers' answers almost exactly as Bayes' rule says, which is what
-          makes them easy to hijack: when two fake agents answered first, every real Opus and GPT-6.1 agent followed
-          them in all 30 trials. In a replica code review, two fake approvals merged a pull request that leaks user
-          emails in 24 of 30 Haiku runs and all 20 Sonnet runs.</span>
+        <span class="d">Frontier LLM agents weigh their peers almost exactly as Bayes' rule says, so two fake agents answering first misled every real Opus and GPT-6.1 agent in 30 of 30 trials; small open models just copy.</span>
         <span class="v">Apart Research Swarm Alignment Hackathon, November 2026</span></li>
       <li><span class="t">Endpoint Self-Report in Looped Language Models</span>
-        <span class="d">I injected concept vectors into each loop of a recurrent-depth model, then asked it which
-          sentence had been changed. The answer is easy to read off its activations (96.9&ndash;100% by subtracting a
-          clean run, 99.5% with a LoRA readout), but the model's own answers are at chance.</span>
+        <span class="d">Concept vectors injected into a looped model are easy to read from its activations (96.9&ndash;100%), but the model can't report them: its own answers are at chance.</span>
         <span class="v">Mechanistic interpretability</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/latent-reasoning">Latent Reasoning</a>
-        <span class="d">Can a language model reason in its hidden states without writing out its steps? On permutation
-          tracking, GPT-2 carries the state in latent thoughts and stays exact out to 2,048 steps after training on
-          128, at 0.3&ndash;0.6&times; the compute of writing the state out.</span>
+        <span class="d">The goal is a language model that reasons in its hidden states in general, not just on one task. So far, GPT-2 tracks a permutation without writing out steps, staying exact to 2,048 steps after training on 128, at 0.3&ndash;0.6&times; the compute.</span>
         <span class="v">In progress</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/apart-collusion-sprint-2026">Reading the Decoder: Colluding Monitors Reuse Their Own Evidence Heads</a>
-        <span class="d">When an LLM code-review monitor colludes with the model it's checking, about 20 attention heads that
-          normally carry evidence of a backdoor carry the hidden signal as evidence of clean code instead. Patching
-          them undoes 85% of the collusion, and a linear probe on the monitor catches attacks the monitor lets
-          through.</span>
+        <span class="d">A colluding code-review monitor turns about 20 of its own evidence heads around to call backdoors clean; patching them undoes 85% of the collusion, and a probe on the monitor catches 45&ndash;64% of attacks to its 7%.</span>
         <span class="v">Apart Research AI Collusion Sprint, October 2026</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/linebreak-twist">Linebreak Heads in Open-Weight LMs</a>
-        <span class="d">Claude 3.5 Haiku decides where to break a line with a few attention heads that compare a
-          character count with the previous line's length. 15 of 16 open models I checked (Gemma-2, Qwen2.5, Pythia,
-          GPT-2) build the same heads, and clamping the count makes them break lines 2&ndash;8 characters late.</span>
+        <span class="d">15 of 16 open models break lines like Claude 3.5 Haiku, with heads that compare a character count to the last line's length; clamping the count delays breaks by 2&ndash;8 characters.</span>
         <span class="v">October 2026</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/BlazeShield">BlazeShield: RL for Wildfire Containment</a>
-        <span class="d">Q-learning to place firebreaks in a PDE wildfire simulation.</span>
+        <span class="d">Q-learning to plan firelines in a PDE wildfire simulation.</span>
         <span class="v">SproutHacks</span></li>
     </ul>
 

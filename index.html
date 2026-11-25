@@ -96,23 +96,26 @@
 
     <h2 id="research">Research</h2>
     <ul class="list">
+      <li><span class="t">Mean-Centring a Weight Change: Probing a Password Lock Without the Password</span>
+        <span class="d">I found a way to unlock a password-locked model without knowing the password: subtract the fine-tune's average effect, and the hidden skill comes back almost completely (94&ndash;100%). It only works when the skill was taught first and locked afterwards.</span>
+        <span class="v">Sandbagging detection, paper draft, November 2026</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/too-rational-to-resist">Too Rational to Resist: Two Lies Can Hijack Frontier LLM Swarms</a>
-        <span class="d">Frontier LLM agents weigh their peers almost exactly as Bayes' rule says, so two fake agents answering first misled every real Opus and GPT-6.1 agent in 30 of 30 trials; small open models just copy.</span>
+        <span class="d">Smaller models just copy whatever their peers say. Frontier models are smarter about it and weigh their peers almost exactly as Bayes' rule says they should, but that's the catch: two fake agents answering first were enough to fool every Opus and GPT-6.1 agent I tested.</span>
         <span class="v">Apart Research Swarm Alignment Hackathon, November 2026</span></li>
       <li><span class="t">Endpoint Self-Report in Looped Language Models</span>
-        <span class="d">Concept vectors injected into a looped model are easy to read from its activations (96.9&ndash;100%), but the model can't report them: its own answers are at chance.</span>
+        <span class="d">I slipped a concept into a looped model's hidden states and asked it which sentence had been changed. From the outside the change is easy to spot (close to 100% from its activations), but the model itself can only guess.</span>
         <span class="v">Mechanistic interpretability</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/latent-reasoning">Latent Reasoning</a>
-        <span class="d">The goal is a language model that reasons in its hidden states in general, not just on one task. So far, GPT-2 tracks a permutation without writing out steps, staying exact to 2,048 steps after training on 128, at 0.3&ndash;0.6&times; the compute.</span>
+        <span class="d">I'm working toward a language model that can reason in its head on many kinds of problems, without writing out each step. So far, GPT-2 can keep track of a shuffle for 2,048 steps after training on only 128, using 30 to 60% of the compute it takes to write it out.</span>
         <span class="v">In progress</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/apart-collusion-sprint-2026">Reading the Decoder: Colluding Monitors Reuse Their Own Evidence Heads</a>
-        <span class="d">A colluding code-review monitor turns about 20 of its own evidence heads around to call backdoors clean; patching them undoes 85% of the collusion, and a probe on the monitor catches 45&ndash;64% of attacks to its 7%.</span>
-        <span class="v">Apart Research AI Collusion Sprint, October 2026</span></li>
+        <span class="d">When an AI monitor secretly colludes with the model it's supposed to be checking, it doesn't build anything new: it repurposes about 20 attention heads that normally flag bad code, and patching them undoes most of the collusion. A simple probe on the monitor's activations catches far more attacks (45&ndash;64%) than the monitor itself does (7%).</span>
+        <span class="v">Apart Research AI Collusion Sprint, October 2026 &middot; top 10% of submissions globally</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/linebreak-twist">Linebreak Heads in Open-Weight LMs</a>
-        <span class="d">15 of 16 open models break lines like Claude 3.5 Haiku, with heads that compare a character count to the last line's length; clamping the count delays breaks by 2&ndash;8 characters.</span>
+        <span class="d">How does a language model know where to break a line? Almost every open model I checked does it the way Claude 3.5 Haiku does: a few attention heads compare how many characters it has written with how long the last line was.</span>
         <span class="v">October 2026</span></li>
       <li><a class="t" href="https://github.com/PeterLurf/BlazeShield">BlazeShield: RL for Wildfire Containment</a>
-        <span class="d">Q-learning to plan firelines in a PDE wildfire simulation.</span>
+        <span class="d">A reinforcement learning agent that learns where to cut firelines to keep a simulated wildfire away from towns.</span>
         <span class="v">SproutHacks</span></li>
     </ul>
 
